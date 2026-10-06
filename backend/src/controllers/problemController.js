@@ -12,6 +12,14 @@ const createProblemHandler = async (req, res) => {
       title,
       description,
       difficulty,
+      tags = [],
+      timeLimit = 1000,
+      memoryLimit = 256,
+      inputFormat = "",
+      outputFormat = "",
+      constraints = "",
+      sampleExplanation = "",
+      status = "draft",
     } = req.body;
 
     if (
@@ -30,7 +38,17 @@ const createProblemHandler = async (req, res) => {
       title,
       description,
       difficulty,
-      req.user.id
+      req.user.id,
+      {
+        tags,
+        timeLimit,
+        memoryLimit,
+        inputFormat,
+        outputFormat,
+        constraints,
+        sampleExplanation,
+        status,
+      }
     );
 
     res.status(201).json({
@@ -102,6 +120,14 @@ const updateProblemHandler = async (
       title,
       description,
       difficulty,
+      tags = [],
+      timeLimit = 1000,
+      memoryLimit = 256,
+      inputFormat = "",
+      outputFormat = "",
+      constraints = "",
+      sampleExplanation = "",
+      status = "draft",
     } = req.body;
 
     if (
@@ -119,7 +145,17 @@ const updateProblemHandler = async (
       req.params.id,
       title,
       description,
-      difficulty
+      difficulty,
+      {
+        tags,
+        timeLimit,
+        memoryLimit,
+        inputFormat,
+        outputFormat,
+        constraints,
+        sampleExplanation,
+        status,
+      }
     );
 
     if (!problem) {
@@ -178,4 +214,3 @@ module.exports = {
   updateProblemHandler,
   deleteProblemHandler,
 };
-

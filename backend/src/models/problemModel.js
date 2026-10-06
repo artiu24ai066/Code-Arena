@@ -4,12 +4,17 @@ const createProblem = async (
   title,
   description,
   difficulty,
-  createdBy
+  createdBy,
+  metadata = {}
 ) => {
   const query = `
     INSERT INTO problems
-    (title, description, difficulty, created_by)
-    VALUES ($1, $2, $3, $4)
+    (
+      title, description, difficulty, created_by, tags, time_limit,
+      memory_limit, input_format, output_format, constraints,
+      sample_explanation, status
+    )
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
     RETURNING *;
   `;
 
@@ -18,6 +23,14 @@ const createProblem = async (
     description,
     difficulty,
     createdBy,
+    metadata.tags ?? [],
+    metadata.timeLimit ?? 1000,
+    metadata.memoryLimit ?? 256,
+    metadata.inputFormat ?? "",
+    metadata.outputFormat ?? "",
+    metadata.constraints ?? "",
+    metadata.sampleExplanation ?? "",
+    metadata.status ?? "draft",
   ]);
 
   return result.rows[0];
@@ -42,11 +55,38 @@ const updateProblem = async (
   id,
   title,
   description,
-  difficulty
+  difficulty,
+  metadata = {}
 ) => {
   const result = await pool.query(
-    "UPDATE problems SET title = $1, description = $2, difficulty = $3 WHERE id = $4 RETURNING *",
-    [title, description, difficulty, id]
+    `UPDATE problems
+     SET title = $1,
+         description = $2,
+         difficulty = $3,
+         tags = $4,
+         time_limit = $5,
+         memory_limit = $6,
+         input_format = $7,
+         output_format = $8,
+         constraints = $9,
+         sample_explanation = $10,
+         status = $11
+     WHERE id = $12
+     RETURNING *`,
+    [
+      title,
+      description,
+      difficulty,
+      metadata.tags ?? [],
+      metadata.timeLimit ?? 1000,
+      metadata.memoryLimit ?? 256,
+      metadata.inputFormat ?? "",
+      metadata.outputFormat ?? "",
+      metadata.constraints ?? "",
+      metadata.sampleExplanation ?? "",
+      metadata.status ?? "draft",
+      id,
+    ]
   );
 
   return result.rows[0];
@@ -66,5 +106,4 @@ module.exports = {
   updateProblem,
   deleteProblem,
 };
-
 

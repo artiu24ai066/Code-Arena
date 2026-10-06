@@ -21,8 +21,10 @@ import { getAllProblems } from "../../services/problemService.js";
 import {
   createProblem,
   createTestCase,
+  deleteTestCase,
   deleteProblem,
   getTestCases,
+  updateTestCase,
   updateProblem,
 } from "../../services/adminService.js";
 
@@ -129,6 +131,7 @@ function AdminProblems() {
   const [editingTestCaseId, setEditingTestCaseId] = useState(null);
   const [testCaseFormError, setTestCaseFormError] = useState("");
   const testCasesRequestRef = useRef(0);
+  const testCaseFormRef = useRef(null);
   const toastTimerRef = useRef(null);
 
   const showToast = (message, type = "success") => {
@@ -209,7 +212,7 @@ function AdminProblems() {
 
       const testCasesResponse = await getTestCases(problemId);
 
-      if (testCasesRequestRef.current !== requestId || expandedProblemId !== problemId) {
+      if (testCasesRequestRef.current !== requestId) {
         return;
       }
 
@@ -219,14 +222,14 @@ function AdminProblems() {
 
       setTestCasesByProblem((current) => ({ ...current, [problemId]: nextCases }));
     } catch (testCasesRequestError) {
-      if (testCasesRequestRef.current !== requestId || expandedProblemId !== problemId) {
+      if (testCasesRequestRef.current !== requestId) {
         return;
       }
 
       setTestCasesError(getErrorMessage(testCasesRequestError, "Failed to load test cases."));
       setTestCasesByProblem((current) => ({ ...current, [problemId]: [] }));
     } finally {
-      if (testCasesRequestRef.current === requestId && expandedProblemId === problemId) {
+      if (testCasesRequestRef.current === requestId) {
         setTestCasesLoading(false);
       }
     }
@@ -284,7 +287,7 @@ function AdminProblems() {
     setFormError("");
   };
 
-  const validateProblemForm = () => {
+  const validateProblemForm = (mode) => {
     const trimmedTitle = formTitle.trim();
     const trimmedDescription = formDescription.trim();
 
@@ -308,23 +311,25 @@ function AdminProblems() {
       return "Memory limit must be greater than 0.";
     }
 
-    const currentTestCases = testCasesByProblem[editingProblem?.id ?? "__new__"] ?? [];
-    const hasAnyTestCase = currentTestCases.length > 0;
-    const hasHiddenTestCase = currentTestCases.some((testCase) => !testCase.isSample);
+    if (mode === "publish") {
+      const currentTestCases = testCasesByProblem[editingProblem?.id ?? "__new__"] ?? [];
+      const hasAnyTestCase = currentTestCases.length > 0;
+      const hasHiddenTestCase = currentTestCases.some((testCase) => !testCase.isSample);
 
-    if (!hasAnyTestCase) {
-      return "At least one test case is required.";
-    }
+      if (!hasAnyTestCase) {
+        return "At least one test case is required before publishing.";
+      }
 
-    if (!hasHiddenTestCase) {
-      return "At least one hidden test case is required.";
+      if (!hasHiddenTestCase) {
+        return "At least one hidden test case is required before publishing.";
+      }
     }
 
     return "";
   };
 
   const handleSubmitForm = async (mode) => {
-    const validationMessage = validateProblemForm();
+    const validationMessage = validateProblemForm(mode);
 
     if (validationMessage) {
       setFormError(validationMessage);
@@ -476,16 +481,24 @@ function AdminProblems() {
       setTestCaseFormError("");
 
       if (editingTestCaseId != null) {
+        const updatedTestCase = await updateTestCase(
+          problemId,
+          editingTestCaseId,
+          trimmedInput,
+          trimmedExpectedOutput,
+          testCaseDraft.isSample
+        );
+
+        const normalizedTestCase = normalizeTestCase(
+          updatedTestCase,
+          editingTestCaseId
+        );
+
         setTestCasesByProblem((current) => ({
           ...current,
           [problemId]: (current[problemId] ?? []).map((testCase) =>
             testCase.id === editingTestCaseId
-              ? {
-                  ...testCase,
-                  input: trimmedInput,
-                  expectedOutput: trimmedExpectedOutput,
-                  isSample: testCaseDraft.isSample,
-                }
+              ? normalizedTestCase
               : testCase
           ),
         }));
@@ -532,27 +545,46 @@ function AdminProblems() {
       isSample: testCase.isSample,
     });
     setTestCaseFormError("");
+    testCaseFormRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
   };
 
-  const handleDuplicateTestCase = (problemId, testCase) => {
-    const duplicatedTestCase = {
-      ...testCase,
-      id: `copy-${Date.now()}`,
-    };
+  const handleDuplicateTestCase = async (problemId, testCase) => {
+    try {
+      const createdTestCase = await createTestCase(
+        problemId,
+        testCase.input,
+        testCase.expectedOutput,
+        testCase.isSample
+      );
+      const duplicatedTestCase = normalizeTestCase(
+        createdTestCase,
+        createdTestCase?.id ?? `testcase-${problemId}-${Date.now()}`
+      );
 
-    setTestCasesByProblem((current) => ({
-      ...current,
-      [problemId]: [...(current[problemId] ?? []), duplicatedTestCase],
-    }));
-    showToast("Test case duplicated.", "success");
+      setTestCasesByProblem((current) => ({
+        ...current,
+        [problemId]: [...(current[problemId] ?? []), duplicatedTestCase],
+      }));
+      showToast("Test case duplicated.", "success");
+    } catch (duplicateError) {
+      showToast(getErrorMessage(duplicateError, "Failed to duplicate test case."), "error");
+    }
   };
 
-  const handleDeleteTestCase = (problemId, testCaseId) => {
-    setTestCasesByProblem((current) => ({
-      ...current,
-      [problemId]: (current[problemId] ?? []).filter((testCase) => testCase.id !== testCaseId),
-    }));
-    showToast("Test case removed.", "success");
+  const handleDeleteTestCase = async (problemId, testCaseId) => {
+    try {
+      await deleteTestCase(problemId, testCaseId);
+      setTestCasesByProblem((current) => ({
+        ...current,
+        [problemId]: (current[problemId] ?? []).filter((testCase) => testCase.id !== testCaseId),
+      }));
+      showToast("Test case removed.", "success");
+    } catch (deleteError) {
+      showToast(getErrorMessage(deleteError, "Failed to delete test case."), "error");
+    }
   };
 
   const handleViewProblem = (problem) => {
@@ -1043,9 +1075,15 @@ function AdminProblems() {
                                     )}
 
                                     <form
+                                      ref={testCaseFormRef}
                                       onSubmit={(event) => handleSaveTestCase(event, problemId)}
                                       className="rounded-2xl border border-white/10 bg-white/5 p-4"
                                     >
+                                      <h4 className="mb-4 text-sm font-semibold text-paper">
+                                        {editingTestCaseId != null
+                                          ? `Editing test case #${editingTestCaseId}`
+                                          : "Add a test case"}
+                                      </h4>
                                       <div className="grid gap-4 lg:grid-cols-2">
                                         <div className="space-y-2">
                                           <label className="text-sm font-medium text-paper/80" htmlFor={`test-input-${problemId}`}>
@@ -1097,7 +1135,7 @@ function AdminProblems() {
                                           className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-paper transition hover:bg-white/10"
                                         >
                                           <X size={16} />
-                                          Clear
+                                          {editingTestCaseId != null ? "Cancel Edit" : "Clear"}
                                         </button>
                                       </div>
 

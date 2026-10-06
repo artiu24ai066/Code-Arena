@@ -16,6 +16,7 @@ const compileCode = (
     const fileName = language === "java" ? "Main.java" : `main.${config.extension}`;
     const sourceFile = path.join(tempDir, fileName);
     const executable = path.join(tempDir, "main");
+    const dockerMount = `type=bind,source=${tempDir.replace(/\\/g, "/")},target=/code`;
 
     fs.mkdirSync(tempDir, { recursive: true });
 
@@ -27,15 +28,16 @@ const compileCode = (
     }
 
     exec(
-      `docker run --rm -v ${tempDir}:/code ${config.compileImage} ${config.compile}`,
+      `docker run --rm --mount "${dockerMount}" ${config.compileImage} ${config.compile}`,
       (error, stdout, stderr) => {
         if (error) {
+          const compilationOutput = stderr || error.message;
           console.log("Compilation Failed");
-          console.log(stderr);
+          console.log(compilationOutput);
 
           return reject({
             type: "COMPILATION_ERROR",
-            message: stderr,
+            message: compilationOutput,
           });
 
         }

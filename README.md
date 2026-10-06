@@ -77,6 +77,27 @@ In progress:
 
 ## Running Locally
 
+### Set up PostgreSQL
+
+Create the `online_judge` database if it does not already exist, then apply the schema from the repository root:
+
+```powershell
+createdb -U postgres online_judge
+psql -U postgres -d online_judge -f backend/database/schema.sql
+```
+
+If `createdb` reports that the database already exists, continue with the `psql` command. You can also run `backend/database/schema.sql` in pgAdmin's Query Tool while connected to `online_judge`.
+
+If the database tables already exist, you can safely run the schema file again to add newly required problem metadata columns; it does not drop existing tables or rows.
+
+The schema creates the tables but does not insert any problems. Register an account, then promote it to admin in pgAdmin's Query Tool (replace the email with the one you registered):
+
+```sql
+UPDATE users SET role = 'admin' WHERE email = 'your-email@example.com';
+```
+
+Sign in again and use the admin area to add problems. The public Problems page will remain empty until at least one problem has been added.
+
 ```bash
 # Backend
 cd backend

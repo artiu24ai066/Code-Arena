@@ -37,6 +37,39 @@ const getTestCasesByProblemId = async (
 
   return result.rows;
 };
+
+const updateTestCase = async (
+  problemId,
+  testCaseId,
+  input,
+  expectedOutput,
+  isSample
+) => {
+  const result = await pool.query(
+    `UPDATE test_cases
+     SET input = $1, expected_output = $2, is_sample = $3
+     WHERE problem_id = $4 AND id = $5
+     RETURNING *`,
+    [input, expectedOutput, isSample, problemId, testCaseId]
+  );
+
+  return result.rows[0];
+};
+
+const deleteTestCase = async (problemId, testCaseId) => {
+  const result = await pool.query(
+    `DELETE FROM test_cases
+     WHERE problem_id = $1 AND id = $2
+     RETURNING *`,
+    [problemId, testCaseId]
+  );
+
+  return result.rows[0];
+};
+
 module.exports = {
-  createTestCase, getTestCasesByProblemId,
+  createTestCase,
+  getTestCasesByProblemId,
+  updateTestCase,
+  deleteTestCase,
 };

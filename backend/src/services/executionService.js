@@ -28,7 +28,7 @@ const runExecutable = (
 --user 1000:1000 \
 --read-only \
 --security-opt=no-new-privileges \
--v ${tempDir}:/code \
+--mount "type=bind,source=${tempDir.replace(/\\/g, "/")},target=/code" \
 ${config.runImage} \
 bash -c "${config.run} < /code/input.txt"`;
 

@@ -15,11 +15,12 @@ export async function getAllSubmissionsAdmin() {
   return response.data.submissions;
 }
 
-export async function updateProblem(id, title, description, difficulty) {
+export async function updateProblem(id, title, description, difficulty, metadata = {}) {
   const response = await apiClient.put(`/problems/${id}`, {
     title,
     description,
     difficulty,
+    ...metadata,
   });
 
   return response.data.problem;
@@ -30,11 +31,12 @@ export async function deleteProblem(id) {
   return response.data;
 }
 
-export async function createProblem(title, description, difficulty) {
+export async function createProblem(title, description, difficulty, metadata = {}) {
   const response = await apiClient.post("/problems", {
     title,
     description,
     difficulty,
+    ...metadata,
   });
 
   return response.data.problem;
@@ -51,6 +53,23 @@ export async function createTestCase(problemId, input, expectedOutput, isSample)
     expectedOutput,
     isSample,
   });
+
+  return response.data.testCase;
+}
+
+export async function updateTestCase(problemId, testCaseId, input, expectedOutput, isSample) {
+  const response = await apiClient.put(
+    `/problems/${problemId}/testcases/${testCaseId}`,
+    { input, expectedOutput, isSample }
+  );
+
+  return response.data.testCase;
+}
+
+export async function deleteTestCase(problemId, testCaseId) {
+  const response = await apiClient.delete(
+    `/problems/${problemId}/testcases/${testCaseId}`
+  );
 
   return response.data.testCase;
 }

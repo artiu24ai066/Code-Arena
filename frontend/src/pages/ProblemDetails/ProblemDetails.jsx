@@ -35,6 +35,10 @@ function getThemePreference() {
   return window.localStorage.getItem("editor-theme") ?? "vs-dark";
 }
 
+function isPendingVerdict(verdict) {
+  return String(verdict ?? "").toLowerCase() === "pending";
+}
+
 function ProblemDetails() {
   const { id } = useParams();
   const [problem, setProblem] = useState(null);
@@ -217,7 +221,7 @@ function ProblemDetails() {
 
       setSubmission(createdSubmission);
 
-      if (createdSubmission?.verdict && createdSubmission.verdict !== "pending") {
+      if (createdSubmission?.verdict && !isPendingVerdict(createdSubmission.verdict)) {
         setSubmitting(false);
         return;
       }
@@ -232,7 +236,7 @@ function ProblemDetails() {
 
           setSubmission(latestSubmission);
 
-          if (latestSubmission?.verdict !== "pending") {
+          if (!isPendingVerdict(latestSubmission?.verdict)) {
             clearPollingInterval();
             setSubmitting(false);
           }
@@ -383,7 +387,7 @@ function ProblemDetails() {
                 className="rounded-lg border border-accent-primary/40 bg-transparent px-4 py-2 text-sm font-medium text-accent-primary transition hover:bg-accent-primary/10 disabled:cursor-not-allowed disabled:opacity-70"
               >
                 {submitting
-                  ? submission?.verdict === "pending"
+                  ? isPendingVerdict(submission?.verdict)
                     ? "Judging..."
                     : "Submitting..."
                   : "Submit"}
@@ -426,17 +430,17 @@ function ProblemDetails() {
                   <span
                     className={`inline-flex items-center rounded-md px-3 py-1 text-xs font-semibold ${verdictBadgeClasses(submission.verdict)}`}
                   >
-                    {submission.verdict === "pending" ? (
+                    {isPendingVerdict(submission.verdict) ? (
                       <span className="mr-2 inline-block h-2 w-2 animate-pulse rounded-full bg-pending" />
                     ) : null}
-                    {submission.verdict === "pending"
+                    {isPendingVerdict(submission.verdict)
                       ? "Judging..."
                       : submission.verdict === "Accepted"
                         ? "Accepted"
                         : submission.verdict}
                   </span>
 
-                  {submission.verdict === "pending" ? (
+                  {isPendingVerdict(submission.verdict) ? (
                     <span className="text-xs text-text-secondary">Polling every 2 seconds</span>
                   ) : null}
                 </div>

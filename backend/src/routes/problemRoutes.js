@@ -16,7 +16,10 @@ const {
   deleteProblemHandler,
 } = require("../controllers/problemController");
 const {
+  getTestCasesHandler,
   createTestCaseHandler,
+  updateTestCaseHandler,
+  deleteTestCaseHandler,
 } = require("../controllers/testCaseController");
 router.get(
   "/",
@@ -44,11 +47,29 @@ router.delete(
   adminMiddleware,
   deleteProblemHandler
 );
+router.get(
+  "/:id/testcases",
+  authMiddleware,
+  adminMiddleware,
+  getTestCasesHandler
+);
 router.post(
   "/:id/testcases",
   authMiddleware,
   adminMiddleware,
   createTestCaseHandler
+);
+router.put(
+  "/:id/testcases/:testCaseId",
+  authMiddleware,
+  adminMiddleware,
+  updateTestCaseHandler
+);
+router.delete(
+  "/:id/testcases/:testCaseId",
+  authMiddleware,
+  adminMiddleware,
+  deleteTestCaseHandler
 );
 
 module.exports = router;
