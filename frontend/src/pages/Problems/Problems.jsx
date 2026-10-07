@@ -66,13 +66,21 @@ function Problems() {
 
   return (
     <div className="min-h-screen bg-transparent px-4 py-10 sm:px-6 lg:px-8">
-      <Card className="mx-auto w-full max-w-6xl p-6 shadow-card sm:p-8">
-        <div className="flex flex-col gap-2">
-          <h1 className="text-2xl font-semibold text-text-primary">Problems</h1>
-          <p className="text-sm text-text-secondary">Browse and filter the available problems.</p>
+      <Card className="mx-auto w-full max-w-6xl border-white/10 bg-[#111820]/90 p-6 shadow-card sm:p-8">
+        <div className="flex flex-col gap-3 border-b border-border-subtle/70 pb-5 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="font-display text-xs font-semibold uppercase tracking-[0.2em] text-accent-primary">
+              Choose your next challenge
+            </p>
+            <h1 className="mt-1 text-2xl font-semibold tracking-tight text-text-primary">Problems</h1>
+            <p className="mt-2 text-sm text-text-secondary">Browse and filter the available problems.</p>
+          </div>
+          <span className="w-fit rounded-full border border-border-subtle/80 bg-bg-surface-hover/60 px-3 py-1.5 text-xs font-medium text-text-secondary">
+            {filteredProblems.length} {filteredProblems.length === 1 ? "problem" : "problems"}
+          </span>
         </div>
 
-        <div className="mt-6 grid gap-4 sm:grid-cols-2">
+        <div className="mt-6 grid gap-4 rounded-2xl border border-border-subtle/60 bg-black/10 p-4 sm:grid-cols-2 sm:p-5">
           <div>
             <label className="mb-1 block text-sm font-medium text-text-primary" htmlFor="searchTerm">
               Search
@@ -117,13 +125,13 @@ function Problems() {
             <EmptyState message="No problems match the current filters." />
           </div>
         ) : (
-          <div className="mt-8 overflow-x-auto rounded-xl border border-border-subtle/80">
+          <div className="mt-8 overflow-x-auto rounded-2xl border border-border-subtle/80 shadow-lg shadow-black/10">
             <table className="min-w-full divide-y divide-border-subtle/80">
               <thead className="bg-bg-surface-hover/80">
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">ID</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Title</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Difficulty</th>
+                  <th className="px-4 py-3.5 text-left text-[11px] font-semibold uppercase tracking-[0.18em] text-text-secondary">ID</th>
+                  <th className="px-4 py-3.5 text-left text-[11px] font-semibold uppercase tracking-[0.18em] text-text-secondary">Title</th>
+                  <th className="px-4 py-3.5 text-left text-[11px] font-semibold uppercase tracking-[0.18em] text-text-secondary">Difficulty</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border-subtle/80 bg-bg-surface/70">
@@ -135,10 +143,10 @@ function Problems() {
                   return (
                     <tr
                       key={problemId}
-                      className="cursor-pointer transition hover:bg-bg-surface-hover/70"
+                      className="cursor-pointer transition-colors hover:bg-accent-primary/[0.06]"
                       onClick={() => navigate(`/problems/${problemId}`)}
                     >
-                      <td className="px-4 py-4 text-sm text-text-secondary">{problemId}</td>
+                      <td className="px-4 py-4 text-xs font-mono text-text-secondary/80">{problemId}</td>
                       <td className="px-4 py-4 text-sm font-medium text-text-primary">
                         <button
                           type="button"

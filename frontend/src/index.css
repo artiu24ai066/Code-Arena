@@ -44,6 +44,34 @@ body {
   color: #E6EDF3;
 }
 
+.arena-home-background {
+  background-color: #0D1117;
+  background-image:
+    radial-gradient(ellipse 70% 45% at 50% 18%, rgb(47 129 247 / 14%), transparent 72%),
+    radial-gradient(ellipse 45% 32% at 50% 48%, rgb(47 129 247 / 5%), transparent 75%);
+}
+
+.arena-home-grid {
+  background-image:
+    linear-gradient(rgb(230 237 243 / 3%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(230 237 243 / 3%) 1px, transparent 1px);
+  background-size: 52px 52px;
+  mask-image: linear-gradient(to bottom, black, transparent 82%);
+}
+
+.arena-home-rings {
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0 47%,
+    rgb(47 129 247 / 8%) 47.2% 47.4%,
+    transparent 47.6% 60%,
+    rgb(230 237 243 / 5%) 60.2% 60.4%,
+    transparent 60.6% 73%,
+    rgb(47 129 247 / 5%) 73.2% 73.4%,
+    transparent 73.6%
+  );
+}
+
 * {
   box-sizing: border-box;
 }

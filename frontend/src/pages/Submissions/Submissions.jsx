@@ -63,10 +63,18 @@ function Submissions() {
 
   return (
     <div className="min-h-screen bg-transparent px-4 py-10 sm:px-6 lg:px-8">
-      <Card className="mx-auto w-full max-w-6xl p-6 shadow-card sm:p-8">
-        <div className="flex flex-col gap-2">
-          <h1 className="text-2xl font-semibold text-text-primary">My Submissions</h1>
-          <p className="text-sm text-text-secondary">Review the submissions created from your account.</p>
+      <Card className="mx-auto w-full max-w-6xl border-white/10 bg-[#111820]/90 p-6 shadow-card sm:p-8">
+        <div className="flex flex-col gap-3 border-b border-border-subtle/70 pb-5 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="font-display text-xs font-semibold uppercase tracking-[0.2em] text-accent-primary">
+              Your activity
+            </p>
+            <h1 className="mt-1 text-2xl font-semibold tracking-tight text-text-primary">My Submissions</h1>
+            <p className="mt-2 text-sm text-text-secondary">Review the submissions created from your account.</p>
+          </div>
+          <span className="w-fit rounded-full border border-border-subtle/80 bg-bg-surface-hover/60 px-3 py-1.5 text-xs font-medium text-text-secondary">
+            {rows.length} {rows.length === 1 ? "submission" : "submissions"}
+          </span>
         </div>
 
         {loading ? (
@@ -83,17 +91,17 @@ function Submissions() {
             <EmptyState message="No submissions yet — try solving a problem." />
           </div>
         ) : (
-          <div className="mt-8 overflow-x-auto rounded-xl border border-border-subtle/80">
+          <div className="mt-8 overflow-x-auto rounded-2xl border border-border-subtle/80 shadow-lg shadow-black/10">
             <table className="min-w-full divide-y divide-border-subtle/80">
               <thead className="bg-bg-surface-hover/80">
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">ID</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Problem ID</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Language</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Verdict</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Execution Time</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Memory Used</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">Submitted At</th>
+                  <th className="px-4 py-3.5 text-left text-[11px] font-semibold uppercase tracking-[0.18em] text-text-secondary">ID</th>
+                  <th className="px-4 py-3.5 text-left text-[11px] font-semibold uppercase tracking-[0.18em] text-text-secondary">Problem ID</th>
+                  <th className="px-4 py-3.5 text-left text-[11px] font-semibold uppercase tracking-[0.18em] text-text-secondary">Language</th>
+                  <th className="px-4 py-3.5 text-left text-[11px] font-semibold uppercase tracking-[0.18em] text-text-secondary">Verdict</th>
+                  <th className="px-4 py-3.5 text-left text-[11px] font-semibold uppercase tracking-[0.18em] text-text-secondary">Execution Time</th>
+                  <th className="px-4 py-3.5 text-left text-[11px] font-semibold uppercase tracking-[0.18em] text-text-secondary">Memory Used</th>
+                  <th className="px-4 py-3.5 text-left text-[11px] font-semibold uppercase tracking-[0.18em] text-text-secondary">Submitted At</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border-subtle/80 bg-bg-surface/70">
@@ -111,7 +119,7 @@ function Submissions() {
                   return (
                     <tr
                       key={submissionId}
-                      className="cursor-pointer transition hover:bg-bg-surface-hover/70"
+                      className="cursor-pointer transition-colors hover:bg-accent-primary/[0.06]"
                       onClick={() => navigate(`/submissions/${submissionId}`)}
                     >
                       <td className="px-4 py-4 text-sm text-text-secondary">{submissionId}</td>

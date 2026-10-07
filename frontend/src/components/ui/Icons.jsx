@@ -51,6 +51,13 @@ export const CheckCircle2 = ({ size, className, ...rest }) => (
   </SvgWrapper>
 );
 
+export const Code2 = ({ size, className, ...rest }) => (
+  <SvgWrapper size={size} className={className} {...rest}>
+    <polyline points="16 18 22 12 16 6" />
+    <polyline points="8 6 2 12 8 18" />
+  </SvgWrapper>
+);
+
 export const Copy = ({ size, className, ...rest }) => (
   <SvgWrapper size={size} className={className} {...rest}>
     <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
@@ -105,6 +112,13 @@ export const Save = ({ size, className, ...rest }) => (
   </SvgWrapper>
 );
 
+export const ShieldCheck = ({ size, className, ...rest }) => (
+  <SvgWrapper size={size} className={className} {...rest}>
+    <path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z" />
+    <polyline points="9 12 11 14 15 10" />
+  </SvgWrapper>
+);
+
 export const Send = ({ size, className, ...rest }) => (
   <SvgWrapper size={size} className={className} {...rest}>
     <line x1="22" y1="2" x2="11" y2="13" />
@@ -133,6 +147,12 @@ export const Trash2 = ({ size, className, ...rest }) => (
     <path d="M10 11v6" />
     <path d="M14 11v6" />
     <path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2" />
+  </SvgWrapper>
+);
+
+export const Zap = ({ size, className, ...rest }) => (
+  <SvgWrapper size={size} className={className} {...rest}>
+    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
   </SvgWrapper>
 );
 
