@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../stores/AuthContext.jsx";
 
 function Navbar() {
@@ -10,49 +10,64 @@ function Navbar() {
     navigate("/login");
   };
 
+  const navLinkClass = ({ isActive }) =>
+    `rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+      isActive
+        ? "bg-accent-primary/10 text-accent-primary"
+        : "text-text-secondary hover:bg-white/5 hover:text-text-primary"
+    }`;
+
   return (
-    <nav className="border-b border-border-subtle/80 bg-bg-surface/90 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-        <Link to="/" className="font-display text-lg font-semibold text-text-primary">
-          Online Judge
+    <nav className="sticky top-0 z-30 border-b border-border-subtle/80 bg-[#0D1117]/95 shadow-lg shadow-black/10 backdrop-blur">
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
+        <Link to="/" className="group inline-flex items-center gap-3 rounded-xl">
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-accent-primary/30 bg-accent-primary/10 font-display text-sm font-bold text-accent-primary transition group-hover:border-accent-primary/60 group-hover:bg-accent-primary/15">
+            {"</>"}
+          </span>
+          <span className="font-display text-base font-semibold tracking-tight text-text-primary transition group-hover:text-accent-primary sm:text-lg">
+            Code Arena
+          </span>
         </Link>
 
-        <div className="flex flex-wrap items-center gap-4 text-sm text-text-secondary">
-          <Link to="/" className="transition-colors hover:text-accent-primary">
+        <div className="flex flex-wrap items-center gap-1">
+          <NavLink to="/" end className={navLinkClass}>
             Home
-          </Link>
-          <Link to="/problems" className="transition-colors hover:text-accent-primary">
+          </NavLink>
+          <NavLink to="/problems" className={navLinkClass}>
             Problems
-          </Link>
+          </NavLink>
           {isAuthenticated ? (
             <>
               {role === "admin" ? (
-                <Link to="/admin" className="transition-colors hover:text-accent-secondary">
+                <NavLink to="/admin" className={navLinkClass}>
                   Admin
-                </Link>
+                </NavLink>
               ) : null}
-              <Link to="/submissions" className="transition-colors hover:text-accent-primary">
+              <NavLink to="/submissions" className={navLinkClass}>
                 Submissions
-              </Link>
-              <Link to="/profile" className="transition-colors hover:text-accent-primary">
+              </NavLink>
+              <NavLink to="/profile" className={navLinkClass}>
                 Profile
-              </Link>
+              </NavLink>
               <button
                 type="button"
                 onClick={handleLogout}
-                className="transition-colors hover:text-accent-primary"
+                className="ml-1 rounded-lg border border-border-subtle/80 px-3 py-2 text-sm font-medium text-text-secondary transition hover:border-verdict-wrong/50 hover:bg-verdict-wrong/10 hover:text-verdict-wrong"
               >
                 Logout
               </button>
             </>
           ) : (
             <>
-              <Link to="/login" className="transition-colors hover:text-accent-primary">
+              <NavLink to="/login" className={navLinkClass}>
                 Login
-              </Link>
-              <Link to="/register" className="transition-colors hover:text-accent-primary">
+              </NavLink>
+              <NavLink
+                to="/register"
+                className="ml-1 rounded-lg bg-accent-primary px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-accent-primary/20 transition hover:bg-accent-primary-hover"
+              >
                 Register
-              </Link>
+              </NavLink>
             </>
           )}
         </div>

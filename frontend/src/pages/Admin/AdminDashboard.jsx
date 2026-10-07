@@ -82,22 +82,44 @@ function AdminDashboard() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold text-text-primary">Admin Dashboard</h1>
-        <p className="mt-2 text-sm text-text-secondary">
+      <div className="flex flex-col gap-2 border-b border-border-subtle/70 pb-5 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p className="font-display text-xs font-semibold uppercase tracking-[0.2em] text-accent-primary">
+            Platform overview
+          </p>
+          <h2 className="mt-1 text-2xl font-semibold tracking-tight text-text-primary">Dashboard</h2>
+          <p className="mt-2 text-sm text-text-secondary">
           Overview of platform activity and admin tools.
-        </p>
+          </p>
+        </div>
+        <span className="text-xs text-text-secondary">Live platform totals</span>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {statCards.map((card) => (
-          <Card key={card.label} className="p-5">
-            <p className="text-sm font-medium text-text-secondary">{card.label}</p>
-            <p className="mt-3 text-3xl font-semibold text-text-primary">
-              {card.value ?? 0}
-            </p>
-          </Card>
-        ))}
+        {statCards.map((card, index) => {
+          const accents = [
+            "border-t-accent-primary",
+            "border-t-verdict-accepted",
+            "border-t-verdict-pending",
+            "border-t-accent-secondary",
+          ];
+
+          return (
+            <Card
+              key={card.label}
+              className={`group border-t-2 ${accents[index]} p-5 transition duration-200 hover:-translate-y-1 hover:bg-bg-surface-hover/80`}
+            >
+              <p className="text-sm font-medium text-text-secondary">{card.label}</p>
+              <p className="mt-4 font-display text-3xl font-semibold tracking-tight text-text-primary transition group-hover:text-accent-primary">
+                {card.value ?? 0}
+              </p>
+              <div className="mt-4 h-px w-full bg-border-subtle/70" />
+              <p className="mt-3 text-xs uppercase tracking-wider text-text-secondary">
+                Current total
+              </p>
+            </Card>
+          );
+        })}
       </div>
     </div>
   );

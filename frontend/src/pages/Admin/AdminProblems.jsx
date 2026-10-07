@@ -609,23 +609,25 @@ function AdminProblems() {
   const isEditing = formMode === "edit";
 
   return (
-    <div className="min-h-screen space-y-6 bg-transparent p-2 text-paper sm:p-4 lg:p-6">
-      <div className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-sm backdrop-blur">
+    <div className="space-y-6 bg-transparent text-paper">
+      <div className="relative overflow-hidden rounded-3xl border border-signal/20 bg-gradient-to-br from-[#111820] via-[#0D1117] to-[#111820] p-5 shadow-card sm:p-7">
+        <div className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full border border-signal/10" />
+        <div className="pointer-events-none absolute -right-8 -top-12 h-40 w-40 rounded-full border border-signal/10" />
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <div className="inline-flex items-center gap-2 rounded-full border border-signal/30 bg-signal/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-signal">
+          <div className="relative">
+            <div className="inline-flex items-center gap-2 rounded-full border border-signal/30 bg-signal/10 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-signal">
               <Sparkles size={14} />
-              Admin workspace
+              Problem library
             </div>
-            <h1 className="mt-3 text-2xl font-semibold text-paper">Problem management</h1>
-            <p className="mt-2 max-w-2xl text-sm text-paper/70">
+            <h1 className="mt-3 text-2xl font-semibold tracking-tight text-paper sm:text-3xl">Manage Problems</h1>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-paper/60">
               Create polished problem pages, manage test cases, and review the exact experience users will see.
             </p>
           </div>
           <button
             type="button"
             onClick={handleOpenCreateForm}
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-signal px-4 py-2.5 text-sm font-medium text-ink transition hover:bg-signal-dark"
+            className="relative inline-flex items-center justify-center gap-2 rounded-xl bg-signal px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-signal/20 transition hover:-translate-y-0.5 hover:bg-signal-dark hover:shadow-signal/30"
           >
             <Plus size={16} />
             Create Problem
@@ -647,10 +649,13 @@ function AdminProblems() {
       ) : null}
 
       {formMode !== "closed" ? (
-        <section className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-sm backdrop-blur">
-          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <section className="overflow-hidden rounded-3xl border border-signal/20 bg-[#111820] shadow-card">
+          <div className="flex flex-col gap-3 border-b border-white/10 bg-white/[0.025] px-5 py-5 md:flex-row md:items-center md:justify-between sm:px-7">
             <div>
-              <h2 className="text-xl font-semibold text-paper">
+              <p className="font-display text-[11px] font-semibold uppercase tracking-[0.2em] text-signal">
+                Problem details
+              </p>
+              <h2 className="mt-1 text-xl font-semibold text-paper">
                 {isEditing ? "Edit problem" : "Create a new problem"}
               </h2>
               <p className="mt-1 text-sm text-paper/70">
@@ -658,13 +663,13 @@ function AdminProblems() {
               </p>
             </div>
             {isEditing && editingProblem ? (
-              <div className="rounded-full border border-paper/10 bg-white/5 px-3 py-1 text-sm text-paper/60">
+              <div className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-sm text-paper/70">
                 Editing problem #{editingProblem.id}
               </div>
             ) : null}
           </div>
 
-          <form className="mt-6 space-y-6" onSubmit={(event) => event.preventDefault()}>
+          <form className="space-y-6 p-5 sm:p-7" onSubmit={(event) => event.preventDefault()}>
             <div className="grid gap-4 lg:grid-cols-2">
               <div className="space-y-2">
                 <label className="text-sm font-medium text-paper/80" htmlFor="problem-title">
@@ -861,30 +866,30 @@ function AdminProblems() {
         </section>
       ) : null}
 
-      <section className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-sm backdrop-blur">
+      <section className="rounded-3xl border border-white/10 bg-[#111820]/80 p-4 shadow-card sm:p-6">
         <div className="grid gap-4 xl:grid-cols-3">
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+        <div className="rounded-2xl border border-signal/20 bg-gradient-to-br from-signal/10 to-transparent p-4 transition hover:border-signal/40">
             <div className="flex items-center justify-between">
-              <p className="text-sm text-paper/60">Total Problems</p>
+            <p className="text-sm font-medium text-paper/70">Total Problems</p>
               <Boxes size={18} className="text-signal" />
             </div>
-            <p className="mt-2 text-2xl font-semibold text-paper">{problems.length}</p>
+          <p className="mt-3 font-display text-3xl font-semibold text-paper">{problems.length}</p>
           </div>
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+        <div className="rounded-2xl border border-pending/20 bg-gradient-to-br from-pending/10 to-transparent p-4 transition hover:border-pending/40">
             <div className="flex items-center justify-between">
-              <p className="text-sm text-paper/60">Drafts</p>
+            <p className="text-sm font-medium text-paper/70">Drafts</p>
               <FileText size={18} className="text-pending" />
             </div>
-            <p className="mt-2 text-2xl font-semibold text-paper">
+          <p className="mt-3 font-display text-3xl font-semibold text-paper">
               {problems.filter((problem) => problem?.status === "draft").length}
             </p>
           </div>
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+        <div className="rounded-2xl border border-verdict-accepted/20 bg-gradient-to-br from-verdict-accepted/10 to-transparent p-4 transition hover:border-verdict-accepted/40">
             <div className="flex items-center justify-between">
-              <p className="text-sm text-paper/60">Published</p>
-              <BookOpen size={18} className="text-signal" />
+            <p className="text-sm font-medium text-paper/70">Published</p>
+            <BookOpen size={18} className="text-verdict-accepted" />
             </div>
-            <p className="mt-2 text-2xl font-semibold text-paper">
+          <p className="mt-3 font-display text-3xl font-semibold text-paper">
               {problems.filter((problem) => problem?.status === "published").length}
             </p>
           </div>
@@ -904,9 +909,9 @@ function AdminProblems() {
           </div>
         ) : (
           <div className="mt-6">
-            <div className="hidden overflow-x-auto lg:block">
+            <div className="hidden overflow-x-auto rounded-2xl border border-white/10 lg:block">
               <table className="min-w-full divide-y divide-white/10">
-                <thead className="bg-white/5">
+                <thead className="bg-white/[0.04]">
                   <tr>
                     <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-[0.2em] text-paper/40">ID</th>
                     <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-[0.2em] text-paper/40">Title</th>
@@ -917,7 +922,7 @@ function AdminProblems() {
                     <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-[0.2em] text-paper/40">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-white/10 bg-white/5">
+                <tbody className="divide-y divide-white/[0.07] bg-black/10">
                   {problems.map((problem) => {
                     const problemId = problem?.id ?? "";
                     const problemTitle = problem?.title ?? "Untitled Problem";
@@ -929,7 +934,7 @@ function AdminProblems() {
 
                     return (
                       <Fragment key={problemId}>
-                        <tr className="transition hover:bg-white/10">
+                        <tr className="transition-colors hover:bg-white/[0.045]">
                           <td className="px-4 py-4 text-sm text-paper/80">{problemId}</td>
                           <td className="px-4 py-4 text-sm font-semibold text-paper">{problemTitle}</td>
                           <td className="px-4 py-4 text-sm text-paper/80">
@@ -992,7 +997,7 @@ function AdminProblems() {
                         {isExpanded ? (
                           <tr>
                             <td colSpan="7" className="px-4 pb-4 pt-0">
-                              <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                              <div className="rounded-2xl border border-signal/15 bg-[#0D1117]/70 p-4 sm:p-5">
                                 <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
                                   <div>
                                     <h3 className="text-sm font-semibold text-paper">Test case manager</h3>
@@ -1020,7 +1025,7 @@ function AdminProblems() {
                                     ) : (
                                       <div className="space-y-3">
                                         {(testCasesByProblem[problemId] ?? []).map((testCase) => (
-                                          <div key={testCase.id} className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                                          <div key={testCase.id} className="rounded-2xl border border-white/10 bg-white/[0.025] p-4 transition hover:border-white/20">
                                             <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
                                               <div className="space-y-2">
                                                 <div className="flex flex-wrap items-center gap-2">
@@ -1079,7 +1084,7 @@ function AdminProblems() {
                                     <form
                                       ref={testCaseFormRef}
                                       onSubmit={(event) => handleSaveTestCase(event, problemId)}
-                                      className="rounded-2xl border border-white/10 bg-white/5 p-4"
+                                      className="rounded-2xl border border-white/10 bg-white/[0.035] p-4 sm:p-5"
                                     >
                                       <h4 className="mb-4 text-sm font-semibold text-paper">
                                         {editingTestCaseId != null
@@ -1168,7 +1173,7 @@ function AdminProblems() {
                 const memoryLimit = problem?.memoryLimit ?? problem?.memory_limit ?? 256;
 
                 return (
-                  <div key={problemId} className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                  <div key={problemId} className="rounded-2xl border border-white/10 bg-[#111820] p-4 shadow-sm transition hover:border-signal/30">
                     <div className="flex items-start justify-between gap-3">
                       <div>
                         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-paper/40">{problemId}</p>
