@@ -41,6 +41,7 @@ export function Badge({ value, variant = "difficulty", className = "" }) {
   const verdictTone = {
     accepted: "border-verdict-accepted/40 bg-verdict-accepted/10 text-verdict-accepted",
     wrong: "border-verdict-wrong/40 bg-verdict-wrong/10 text-verdict-wrong",
+    "wrong answer": "border-verdict-wrong/40 bg-verdict-wrong/10 text-verdict-wrong",
     tle: "border-verdict-tle/40 bg-verdict-tle/10 text-verdict-tle",
     mle: "border-verdict-mle/40 bg-verdict-mle/10 text-verdict-mle",
     error: "border-verdict-error/40 bg-verdict-error/10 text-verdict-error",

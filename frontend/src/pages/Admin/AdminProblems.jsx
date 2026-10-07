@@ -868,26 +868,26 @@ function AdminProblems() {
 
       <section className="rounded-3xl border border-white/10 bg-[#111820]/80 p-4 shadow-card sm:p-6">
         <div className="grid gap-4 xl:grid-cols-3">
-        <div className="rounded-2xl border border-signal/20 bg-gradient-to-br from-signal/10 to-transparent p-4 transition hover:border-signal/40">
+        <div className="rounded-2xl border border-emerald-400/20 bg-gradient-to-br from-emerald-400/10 to-transparent p-4 transition hover:border-emerald-400/40">
             <div className="flex items-center justify-between">
             <p className="text-sm font-medium text-paper/70">Total Problems</p>
-              <Boxes size={18} className="text-signal" />
+              <Boxes size={18} className="text-emerald-300" />
             </div>
           <p className="mt-3 font-display text-3xl font-semibold text-paper">{problems.length}</p>
           </div>
-        <div className="rounded-2xl border border-pending/20 bg-gradient-to-br from-pending/10 to-transparent p-4 transition hover:border-pending/40">
+        <div className="rounded-2xl border border-violet-400/20 bg-gradient-to-br from-violet-400/10 to-transparent p-4 transition hover:border-violet-400/40">
             <div className="flex items-center justify-between">
             <p className="text-sm font-medium text-paper/70">Drafts</p>
-              <FileText size={18} className="text-pending" />
+              <FileText size={18} className="text-violet-300" />
             </div>
           <p className="mt-3 font-display text-3xl font-semibold text-paper">
               {problems.filter((problem) => problem?.status === "draft").length}
             </p>
           </div>
-        <div className="rounded-2xl border border-verdict-accepted/20 bg-gradient-to-br from-verdict-accepted/10 to-transparent p-4 transition hover:border-verdict-accepted/40">
+        <div className="rounded-2xl border border-amber-400/20 bg-gradient-to-br from-amber-400/10 to-transparent p-4 transition hover:border-amber-400/40">
             <div className="flex items-center justify-between">
             <p className="text-sm font-medium text-paper/70">Published</p>
-            <BookOpen size={18} className="text-verdict-accepted" />
+            <BookOpen size={18} className="text-amber-300" />
             </div>
           <p className="mt-3 font-display text-3xl font-semibold text-paper">
               {problems.filter((problem) => problem?.status === "published").length}
