@@ -1,21 +1,38 @@
 const { executeCode } = require("../services/executeService");
+const { getProblemById } = require("../models/problemModel");
 
 const executeHandler = async (req, res) => {
   try {
     const {
+      problemId,
       language,
       code,
       input = "",
     } = req.body;
 
-    if (!language || !code) {
+    if (!problemId || !language || !code) {
       return res.status(400).json({
         success: false,
-        message: "Language and code are required",
+        message: "Problem, language, and code are required",
       });
     }
 
-    const result = await executeCode(code, language, input);
+    const problem = await getProblemById(problemId);
+
+    if (!problem) {
+      return res.status(404).json({
+        success: false,
+        message: "Problem not found",
+      });
+    }
+
+    const result = await executeCode(
+      code,
+      language,
+      input,
+      problem.memory_limit,
+      problem.time_limit
+    );
 
     return res.status(200).json({
       success: true,

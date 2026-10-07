@@ -16,6 +16,7 @@ const {
 const {
   getTestCasesByProblemId,
 } = require("../models/testCaseModel");
+const { getProblemById } = require("../models/problemModel");
 const judgeSubmission = async (
   submissionId
 ) => {
@@ -24,6 +25,8 @@ const judgeSubmission = async (
   try {
     const submission =
       await getSubmissionById(submissionId);
+    const problem =
+      await getProblemById(submission.problem_id);
     const testCases =
       await getTestCasesByProblemId(
         submission.problem_id
@@ -64,7 +67,9 @@ for (const testCase of testCases) {
     executable,
     testCase.input,
     submission.language,
-    requestId
+    requestId,
+    problem.memory_limit,
+    problem.time_limit
   );
  executionTime = result.executionTime;
 const output = result.output;

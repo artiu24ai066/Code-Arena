@@ -257,14 +257,16 @@ function AdminProblems() {
     setEditingProblem(problem);
     setFormTitle(problem?.title ?? "");
     setFormDescription(problem?.description ?? "");
-    setFormInputFormat(problem?.inputFormat ?? "");
-    setFormOutputFormat(problem?.outputFormat ?? "");
+    setFormInputFormat(problem?.inputFormat ?? problem?.input_format ?? "");
+    setFormOutputFormat(problem?.outputFormat ?? problem?.output_format ?? "");
     setFormConstraints(problem?.constraints ?? "");
     setFormDifficulty(problem?.difficulty ?? "easy");
     setFormTags(normalizeTags(problem?.tags));
-    setFormTimeLimit(problem?.timeLimit ?? 1000);
-    setFormMemoryLimit(problem?.memoryLimit ?? 256);
-    setFormSampleExplanation(problem?.sampleExplanation ?? "");
+    setFormTimeLimit(problem?.timeLimit ?? problem?.time_limit ?? 1000);
+    setFormMemoryLimit(problem?.memoryLimit ?? problem?.memory_limit ?? 256);
+    setFormSampleExplanation(
+      problem?.sampleExplanation ?? problem?.sample_explanation ?? ""
+    );
     setFormStatus(problem?.status ?? "draft");
     setFormError("");
     setExpandedProblemId(null);
@@ -303,12 +305,12 @@ function AdminProblems() {
       return "Difficulty is required.";
     }
 
-    if (!Number.isFinite(formTimeLimit) || Number(formTimeLimit) <= 0) {
-      return "Time limit must be greater than 0.";
+    if (!Number.isSafeInteger(formTimeLimit) || formTimeLimit <= 0) {
+      return "Time limit must be a positive integer in milliseconds.";
     }
 
-    if (!Number.isFinite(formMemoryLimit) || Number(formMemoryLimit) <= 0) {
-      return "Memory limit must be greater than 0.";
+    if (!Number.isSafeInteger(formMemoryLimit) || formMemoryLimit <= 0) {
+      return "Memory limit must be a positive integer in MB.";
     }
 
     if (mode === "publish") {

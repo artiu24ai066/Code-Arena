@@ -150,8 +150,13 @@ function ProblemDetails() {
   const title = problem.title ?? "Untitled Problem";
   const difficulty = problem.difficulty ?? "Unknown";
   const description = problem.description ?? "";
-  const timeLimitMs = problem.time_limit_ms ?? problem.timeLimitMs;
-  const memoryLimitKb = problem.memory_limit_kb ?? problem.memoryLimitKb;
+  const inputFormat = problem.input_format ?? problem.inputFormat ?? "";
+  const outputFormat = problem.output_format ?? problem.outputFormat ?? "";
+  const constraints = problem.constraints ?? "";
+  const sampleExplanation =
+    problem.sample_explanation ?? problem.sampleExplanation ?? "";
+  const timeLimitMs = problem.time_limit ?? problem.timeLimit;
+  const memoryLimitMb = problem.memory_limit ?? problem.memoryLimit;
 
   const handleLanguageChange = (event) => {
     const nextLanguage = event.target.value;
@@ -176,7 +181,7 @@ function ProblemDetails() {
     setExecutionTime(null);
 
     try {
-      const result = await executeCode(language, code, customInput);
+      const result = await executeCode(problem.id, language, code, customInput);
 
       setOutput(result?.output ?? "");
       setExecutionTime(result?.executionTime ?? null);
@@ -292,15 +297,56 @@ function ProblemDetails() {
           <div>
             <h1 className="text-2xl font-semibold text-text-primary">{title}</h1>
             <p className="mt-2 text-sm text-text-secondary">
-              Time Limit: {timeLimitMs ?? "-"} ms · Memory Limit: {memoryLimitKb ?? "-"} KB
+              Time Limit: {timeLimitMs ?? "-"} ms · Memory Limit: {memoryLimitMb ?? "-"} MB
             </p>
           </div>
 
           <Badge value={difficulty} variant="difficulty" />
         </div>
 
-        <div className="mt-6 rounded-2xl border border-border-subtle/80 bg-bg-surface/70 p-4 text-sm leading-6 text-text-secondary sm:p-6">
-          <div className="whitespace-pre-wrap">{description}</div>
+        <div className="mt-6 space-y-5">
+          <section className="rounded-2xl border border-border-subtle/80 bg-bg-surface/70 p-4 sm:p-6">
+            <h2 className="text-lg font-semibold text-text-primary">Problem Statement</h2>
+            <div className="mt-2 whitespace-pre-wrap text-sm leading-6 text-text-secondary">
+              {description}
+            </div>
+          </section>
+
+          {inputFormat ? (
+            <section className="rounded-2xl border border-border-subtle/80 bg-bg-surface/70 p-4 sm:p-6">
+              <h2 className="text-lg font-semibold text-text-primary">Input Format</h2>
+              <div className="mt-2 whitespace-pre-wrap text-sm leading-6 text-text-secondary">
+                {inputFormat}
+              </div>
+            </section>
+          ) : null}
+
+          {outputFormat ? (
+            <section className="rounded-2xl border border-border-subtle/80 bg-bg-surface/70 p-4 sm:p-6">
+              <h2 className="text-lg font-semibold text-text-primary">Output Format</h2>
+              <div className="mt-2 whitespace-pre-wrap text-sm leading-6 text-text-secondary">
+                {outputFormat}
+              </div>
+            </section>
+          ) : null}
+
+          {constraints ? (
+            <section className="rounded-2xl border border-border-subtle/80 bg-bg-surface/70 p-4 sm:p-6">
+              <h2 className="text-lg font-semibold text-text-primary">Constraints</h2>
+              <div className="mt-2 whitespace-pre-wrap text-sm leading-6 text-text-secondary">
+                {constraints}
+              </div>
+            </section>
+          ) : null}
+
+          {sampleExplanation ? (
+            <section className="rounded-2xl border border-border-subtle/80 bg-bg-surface/70 p-4 sm:p-6">
+              <h2 className="text-lg font-semibold text-text-primary">Sample Explanation</h2>
+              <div className="mt-2 whitespace-pre-wrap text-sm leading-6 text-text-secondary">
+                {sampleExplanation}
+              </div>
+            </section>
+          ) : null}
         </div>
 
         <div className="mt-6 rounded-2xl border border-border-subtle/80 bg-bg-surface/50 p-4 shadow-sm sm:p-6">

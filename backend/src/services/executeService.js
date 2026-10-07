@@ -5,7 +5,13 @@ const languages = require("../docker/languages");
 const { compileCode } = require("./compilerService");
 const { runExecutable } = require("./executionService");
 
-const executeCode = async (code, language, customInput) => {
+const executeCode = async (
+  code,
+  language,
+  customInput,
+  memoryLimit,
+  timeLimit
+) => {
   const requestId = uuidv4();
   const projectRoot = path.join(__dirname, "../..");
 
@@ -29,7 +35,9 @@ const executeCode = async (code, language, customInput) => {
       executable,
       customInput,
       language,
-      requestId
+      requestId,
+      memoryLimit,
+      timeLimit
     );
 
     return {

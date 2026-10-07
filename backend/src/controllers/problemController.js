@@ -6,6 +6,9 @@ const {
   deleteProblem,
 } = require("../models/problemModel");
 
+const isPositiveInteger = (value) =>
+  Number.isSafeInteger(Number(value)) && Number(value) > 0;
+
 const createProblemHandler = async (req, res) => {
   try {
     const {
@@ -33,6 +36,12 @@ const createProblemHandler = async (req, res) => {
       });
     }
 
+    if (!isPositiveInteger(timeLimit) || !isPositiveInteger(memoryLimit)) {
+      return res.status(400).json({
+        success: false,
+        message: "Time limit (ms) and memory limit (MB) must be positive integers",
+      });
+    }
 
     const problem = await createProblem(
       title,
@@ -138,6 +147,13 @@ const updateProblemHandler = async (
       return res.status(400).json({
         success: false,
         message: "All fields are required",
+      });
+    }
+
+    if (!isPositiveInteger(timeLimit) || !isPositiveInteger(memoryLimit)) {
+      return res.status(400).json({
+        success: false,
+        message: "Time limit (ms) and memory limit (MB) must be positive integers",
       });
     }
 
