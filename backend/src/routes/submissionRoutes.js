@@ -24,6 +24,7 @@ router.get(
 );
 router.get(
   "/:id",
+  authMiddleware,
   getSubmissionByIdHandler
 );
 router.post(

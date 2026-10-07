@@ -7,6 +7,7 @@ import Problems from "../pages/Problems/Problems";
 import ProblemDetails from "../pages/ProblemDetails/ProblemDetails";
 import Profile from "../pages/Profile/Profile";
 import Submissions from "../pages/Submissions/Submissions";
+import SubmissionDetails from "../pages/Submissions/SubmissionDetails";
 import AdminDashboard from "../pages/Admin/AdminDashboard";
 import AdminProblems from "../pages/Admin/AdminProblems";
 import AdminUsers from "../pages/Admin/AdminUsers";
@@ -28,6 +29,7 @@ function AppRoutes() {
           <Route path="/problems/:id" element={<ProblemDetails />} />
           <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
           <Route path="/submissions" element={<ProtectedRoute><Submissions /></ProtectedRoute>} />
+          <Route path="/submissions/:id" element={<ProtectedRoute><SubmissionDetails /></ProtectedRoute>} />
           <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
             <Route index element={<AdminDashboard />} />
             <Route path="problems" element={<AdminProblems />} />

@@ -112,7 +112,7 @@ function Submissions() {
                     <tr
                       key={submissionId}
                       className="cursor-pointer transition hover:bg-bg-surface-hover/70"
-                      onClick={() => navigate(`/problems/${problemId}`)}
+                      onClick={() => navigate(`/submissions/${submissionId}`)}
                     >
                       <td className="px-4 py-4 text-sm text-text-secondary">{submissionId}</td>
                       <td className="px-4 py-4 text-sm text-text-secondary">{problemId}</td>

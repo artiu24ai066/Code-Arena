@@ -109,6 +109,16 @@ const getSubmissionByIdHandler = async (
       });
     }
 
+    if (
+      submission.user_id !== req.user.id &&
+      req.user.role !== "admin"
+    ) {
+      return res.status(403).json({
+        success: false,
+        message: "You are not allowed to view this submission",
+      });
+    }
+
     res.status(200).json({
       success: true,
       submission,
